@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="sample" basedir="." default="all">
 	<!-- ビルドトップターゲット -->
-	<target name="all" description="トップターゲット" depends="clean,startupJar,webapp1Jar,webapp2Jar">
+	<target name="all" description="トップターゲット" depends="startupJar,webapp1Jar,webapp2Jar">
 		<echo message="ビルドを実行" />
 	</target>
 	<!-- jarファイルの作成 -->
@@ -50,10 +50,16 @@
 		</exec>
 	</target>
 	<!-- WebServer/WebAppコンテナイメージ実行 -->
-	<target description="コンテナの起動" name="run" depends="mkimage">
+	<target description="コンテナの起動" name="up" depends="mkimage">
 		<exec executable="docker-compose">
 			<arg value="up" />
 			<arg value="-d" />
+		</exec>
+	</target>
+	<!-- WebServer/WebAppコンテナイメージ実行停止 -->
+	<target description="コンテナの起動" name="down">
+		<exec executable="docker-compose">
+			<arg value="down" />
 		</exec>
 	</target>
 </project>

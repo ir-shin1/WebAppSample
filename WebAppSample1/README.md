@@ -44,6 +44,13 @@ $ ant mkimage
 $ docker-compose up
 ```
 
+または
+
+```
+$ ant up
+```
+
+
 ### 実行確認
 
 他のターミナルから curlコマンドでWebアプリケーションにアクセスする。
@@ -57,4 +64,21 @@ $ curl 'http://localhost/WebApp2/'
 
 ```
 $ docker-compose down
+```
+
+または
+
+```
+$ ant down
+```
+
+## その他
+
+dockerのイメージを作り直しを行うと<none>のイメージが溜まる。この場合、以下のコマンドで一括して削除ができる。
+基本、過去のイメージが必要になることは無いので、この削除方法で問題はない。
+
+```
+$ docker image prune
+WARNING! This will remove all dangling images.
+Are you sure you want to continue? [y/N] y
 ```
