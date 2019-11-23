@@ -1,0 +1,40 @@
+version: "2.4"
+
+services:
+  httpd_sv:
+    image: httpd2.4:0.1
+    container_name: httpd
+    ports:
+      - "80:80"
+    networks:
+      - webapp_network
+    links:
+      # httpd.conf でproxy先を「ProxyPass /WebApp1/ http://webapp1:8080/WebApp/」としているため、
+      - webapp1_sv:webapp1
+      # httpd.conf でproxy先を「ProxyPass /WebApp2/ http://webapp2:8080/WebApp/」としているため、
+      - webapp2_sv:webapp2
+    build:
+      context: ./
+      dockerfile: Dockerfile_httpd
+
+  webapp1_sv:
+    image: webapp1:0.1
+    container_name: webapp1
+    networks:
+      - webapp_network
+    build:
+      context: ./
+      dockerfile: Dockerfile_webapp1
+
+  webapp2_sv:
+    image: webapp2:0.1
+    container_name: webapp2
+    networks:
+      - webapp_network
+    build:
+      context: ./
+      dockerfile: Dockerfile_webapp2
+
+networks:
+  webapp_network:
+    external: true

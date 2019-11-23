@@ -1,0 +1,24 @@
+FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u232-b09
+
+ENV CATALINA_HOME /opt/tomcat
+ENV PATH $CATALINA_HOME/bin:$CATALINA_HOME/app:$PATH
+WORKDIR $CATALINA_HOME
+
+ENV TOMCAT_SHA512 da2c1584767a475f02c11aed70a493accdbe966933e2e483982dfc47458d9d6e17c8a95752bfbdca9e93efbcc48812d6ba445ac2ff450645ac882126cc7b1ef5
+
+ENV TOMCAT_TAR="apache-tomcat-8.5.47-embed.tar.gz"
+
+COPY "embed/$TOMCAT_TAR" "$CATALINA_HOME/"
+COPY app/webapp1.sh app/startup.jar app/webapp1.jar "$CATALINA_HOME/app/"
+
+RUN set -eux && \
+    addgroup -g 91 -S tomcat && \
+    adduser -u 91 -S -G tomcat tomcat && \
+    mkdir -p "$CATALINA_HOME/lib" && \
+    echo "$TOMCAT_SHA512  $TOMCAT_TAR" | sha512sum -c - && \
+    tar -xf "$TOMCAT_TAR" --strip-components=1 -C "$CATALINA_HOME/lib" && \
+    chown -R tomcat.tomcat "$CATALINA_HOME" && \
+    chmod +x app/*.sh
+
+EXPOSE 8080
+CMD [ "webapp1.sh" ]

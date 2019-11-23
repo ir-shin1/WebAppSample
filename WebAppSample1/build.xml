@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="sample" basedir="." default="all">
+	<!-- ビルドトップターゲット -->
+	<target name="all" description="トップターゲット" depends="clean,startupJar,webapp1Jar,webapp2Jar">
+		<echo message="ビルドを実行" />
+	</target>
+	<!-- jarファイルの作成 -->
+	<target name="startupJar" description="JARファイル作成" depends="compile">
+		<echo message="共通JARファイルを作成します" />
+		<jar destfile="app/startup.jar">
+			<fileset dir="build/classes" includes="**/startup/*.class" />
+		</jar>
+	</target>
+	<target name="webapp1Jar" description="JARファイル作成" depends="compile">
+		<echo message="WebApp1 JARファイルを作成します" />
+		<jar destfile="app/webapp1.jar">
+			<fileset dir="build/classes" includes="**/webapp1/*.class" />
+		</jar>
+	</target>
+	<target name="webapp2Jar" description="JARファイル作成" depends="compile">
+		<echo message="WebApp2 JARファイルを作成します" />
+		<jar destfile="app/webapp2.jar">
+			<fileset dir="build/classes" includes="**/webapp2/*.class" />
+		</jar>
+	</target>
+	<!-- javaファイルのコンパイル -->
+	<target name="compile">
+		<mkdir dir="build" />
+		<mkdir dir="build/classes" />
+		<javac classpathref="build.lib" srcdir="src" destdir="build/classes" encoding="utf-8" source="1.8" target="1.8" fork="true" memorymaximumsize="256m" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
+			<compilerarg value="-Xlint:deprecation" />
+			<compilerarg value="-Xlint:unchecked" />
+		</javac>
+	</target>
+	<!-- 環境クリーニング -->
+	<target name="clean">
+		<delete file="app/startup.jar" />
+		<delete file="app/webapp1.jar" />
+		<delete file="app/webapp2.jar" />
+		<delete dir="build" />
+	</target>
+	<!-- コンパイルに必要なjarファイルの定義 -->
+	<path id="build.lib">
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+	<!-- WebServer/WebAppコンテナイメージ作成 -->
+	<target description="コンテナイメージ作成" name="mkimage" depends="all">
+		<exec executable="docker-compose">
+			<arg value="build" />
+		</exec>
+	</target>
+	<!-- WebServer/WebAppコンテナイメージ実行 -->
+	<target description="コンテナの起動" name="run" depends="mkimage">
+		<exec executable="docker-compose">
+			<arg value="up" />
+			<arg value="-d" />
+		</exec>
+	</target>
+</project>

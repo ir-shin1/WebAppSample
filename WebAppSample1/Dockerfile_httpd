@@ -1,0 +1,14 @@
+FROM httpd:2.4.41-alpine                                                            
+
+ENV HTTPD_PREFIX=/usr/local/apache2
+
+ENV PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+WORKDIR /usr/local/apache2
+
+COPY conf/httpd.conf /usr/local/apache2/conf/httpd.conf
+
+#STOPSIGNAL WINCH
+
+EXPOSE 80
+CMD ["httpd-foreground"]
