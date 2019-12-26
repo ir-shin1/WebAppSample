@@ -16,6 +16,17 @@ public class TomcatApp {
     public static void main(String argv[]) throws Exception {
         Tomcat tomcat = new Tomcat();
 
+        // 待ち受けポートとホスト名の指定
+        tomcat.setPort(Integer.parseInt(argv[0]));
+        tomcat.setHostname(argv[1]);
+
+        // public Connector getConnector()
+        // Get the default HTTP connector that is used by the embedded Tomcat. It is
+        // first configured connector in the service. If there's no connector defined,
+        // it will create and add a default connector using the port and address
+        // specified in this Tomcat instance, and return it for further customization.
+        tomcat.getConnector();
+
         // public Context addContext（String contextPath、 String docBase）
         // contextPath The context mapping to use, "" for root context.
         // コンテキストの追加-プログラムモード、デフォルトのweb.xmlは使用されません。
@@ -40,10 +51,6 @@ public class TomcatApp {
         // 上記のように無効化できそうな感じのコメントがあったが、以下の8.5.xソースをみるとディレクトリは作るようだ
         // https://github.com/apache/tomcat/blob/dd7019b4932f2135a55b538b6dd63b7d10180526/java/org/apache/catalina/startup/Tomcat.java#L783
         // tomcat.setBaseDir();
-
-        // 待ち受けポートとホスト名の指定
-        tomcat.setPort(Integer.parseInt(argv[0]));
-        tomcat.setHostname(argv[1]);
 
         // public Context addWebapp（String contextPath、 String docBase）
         // 指定されたWARファイルをホストのappBase addWebapp(String, String)にコピーし、新しくコピーされたWARで呼び出します 。

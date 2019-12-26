@@ -1,8 +1,12 @@
 # tomcat-embed を使用したWebアプリケーションサンプル
 
+## 参考
+
+[Tomcat9対応のサンプル](https://github.com/jyeary/tomcat-9-embedded/blob/master/src/main/java/com/bluelotussoftware/tomcat/embedded/Main.java)
+
 組み込みTomcatの org.apache.catalina.startup.Tomcat を使用してWebアプリケーションを作成
 
-* apache-tomcat-8.5.47-embed.tar.gz
+* apache-tomcat-8.5.50-embed.tar.gz
 
  org.apache.catalina.startup.Tomcat を使用したmainクラス
 
