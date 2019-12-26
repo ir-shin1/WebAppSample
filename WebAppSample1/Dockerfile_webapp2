@@ -10,6 +10,7 @@ ENV TOMCAT_TAR="apache-tomcat-8.5.50-embed.tar.gz"
 
 COPY "embed/$TOMCAT_TAR" "$CATALINA_HOME/"
 COPY app/webapp2.sh app/startup.jar app/webapp2.jar "$CATALINA_HOME/app/"
+COPY conf/logging.properties "$CATALINA_HOME/conf/"
 
 RUN set -eux && \
     addgroup -g 91 -S tomcat && \
